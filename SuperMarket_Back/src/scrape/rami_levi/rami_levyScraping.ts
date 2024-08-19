@@ -5,8 +5,8 @@ import {
   CategoryProductI,
   SuperMarketCategoriesI,
   SuperMarketPricesI,
-} from "../../types/scrape/scraping.types";
-import { getScrapedProductNameAndPrice } from "../../utils/scrape/funcs";
+} from "../scrape_types/scraping.types";
+import { getScrapedProductNameAndPrice } from "../scrape_utils/funcs";
 
 export async function ramiLevyScrape() {
   try {

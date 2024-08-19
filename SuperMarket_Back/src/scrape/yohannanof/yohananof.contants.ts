@@ -1,4 +1,4 @@
-import { SuperMarketCategoriesI } from "../../types/scrape/scraping.types";
+import { SuperMarketCategoriesI } from "../scrape_types/scraping.types";
 
 export const MILK_AND_EGGS_CATEGORY = [
   "חלב תנובה",

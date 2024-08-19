@@ -1,26 +1,26 @@
 import { Schema, model, Document, Types } from "mongoose";
+import { CompanyProductI } from "../types/products.types";
+import { CompanyProductSchema } from "./product.model";
+import { CartI } from "../types/cart.types";
 
-// Define the CartProduct interface
-interface CartProduct {
-  productId: string;
-  productName: string;
-  quantity: number;
-  productPrices: Array<{
-    brandName: string;
-    price: number;
-  }>;
-}
+const cartProductSchema = new Schema({
+  productId: {
+    type: String,
+    required: true,
+  },
+  productName: {
+    type: String,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    default: 1,
+  },
+  productPrices: [CompanyProductSchema],
+});
 
-// Define the Cart interface extending Mongoose's Document
-interface Cart extends Document {
-  name: string;
-  userId: Types.ObjectId;
-  collaborators?: Types.Array<Types.ObjectId>;
-  cartProducts: Types.Array<CartProduct>;
-}
-
-// Define the Cart Schema
-const cartSchema = new Schema<Cart>({
+const cartSchema = new Schema<CartI>({
   name: {
     type: String,
     required: true,
@@ -37,36 +37,12 @@ const cartSchema = new Schema<Cart>({
       default: [],
     },
   ],
-  cartProducts: [
-    {
-      productId: {
-        type: String,
-        required: true,
-      },
-      productName: {
-        type: String,
-        required: true,
-      },
-      quantity: {
-        type: Number,
-        required: true,
-        default: 1,
-      },
-      productPrices: [
-        {
-          brandName: {
-            type: String,
-            required: true,
-          },
-          price: {
-            type: Number,
-            required: true,
-          },
-        },
-      ],
-    },
-  ],
+  cartProducts: {
+    type: [cartProductSchema],
+    required: true,
+    default: [],
+  },
 });
 
-const CartModel = model<Cart>("Cart", cartSchema);
+const CartModel = model<CartI>("Cart", cartSchema);
 export default CartModel;

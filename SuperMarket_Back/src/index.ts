@@ -3,10 +3,10 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
-import userRoutes from "./routes/user.route"; // User routes
-import authRoutes from "./routes/auth.route"; // Auth routes
-import cartRoutes from "./routes/cart.route"; // Cart routes
-import productRoutes from "./routes/product.route"; // Product routes
+import userRoutes from "./routes/user.route";
+import authRoutes from "./routes/auth.route";
+import cartRoutes from "./routes/cart.route";
+import productRoutes from "./routes/product.route";
 import { verifyToken } from "./middlewares/auth.middleware";
 import { app, server } from "./config/sockets";
 import roomsRoutes from "./routes/rooms.routes";
@@ -31,8 +31,8 @@ async function main() {
 
   // ROUTES
   app.use("/api/auth", authRoutes); // checked
-  app.use("/api/products", productRoutes); 
-  app.use("/api/user", verifyToken, userRoutes); // half checked
+  app.use("/api/products", productRoutes);
+  app.use("/api/user", verifyToken, userRoutes);
   app.use("/api/cart", verifyToken, cartRoutes);
   app.use("/api/rooms", verifyToken, roomsRoutes);
 

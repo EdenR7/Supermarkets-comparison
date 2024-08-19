@@ -63,18 +63,16 @@ export const addProductToCurrentCart = async (
         .status(404)
         .json({ message: "User not found or product already exist" });
 
-
     res.status(200).json(user.currentCart);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
+    console.log("addProductToCurrentCart Error:\n", errorName, errorMessage);
     if (errorName === "CastError")
       return res.status(404).json({ message: "Invalid product ID" });
     res.status(500).json({ message: errorMessage });
   }
 };
 
-//////////////////////////////////////////////////////////////////
 export const incrementProductQuantity = async (
   req: AuthRequest,
   res: Response
@@ -95,7 +93,7 @@ export const incrementProductQuantity = async (
     res.status(200).json(user.currentCart);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
+    console.log("incrementProductQuantity Error:\n", errorName, errorMessage);
     res.status(500).json({ message: errorMessage });
   }
 };
@@ -122,6 +120,7 @@ export const decrementProductQuantity = async (
     const product = user.currentCart.find((item) => {
       return item.productId === productId;
     });
+
     if (product && product.quantity < 1) {
       user = await UserModel.findOneAndUpdate(
         { _id: req.userId },
@@ -138,7 +137,7 @@ export const decrementProductQuantity = async (
     res.status(200).json(user.currentCart);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
+    console.log("decrementProductQuantity Error:\n", errorName, errorMessage);
     res.status(500).json({ message: errorMessage });
   }
 };
@@ -148,39 +147,40 @@ export async function removeProductFromCart(req: AuthRequest, res: Response) {
 
   try {
     const user = await UserModel.findOneAndUpdate(
-      { _id: req.userId },
+      { _id: req.userId, "currentCart.productId": productId },
       { $pull: { currentCart: { productId } } },
       { new: true }
     );
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ message: "User cart with that product ID not found" });
     }
 
     res.status(200).json(user.currentCart);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
+    console.log("removeProductFromCart Error:\n", errorName, errorMessage);
     res.status(500).json({ message: errorMessage });
   }
 }
 
 export async function clearCurrentCart(req: AuthRequest, res: Response) {
   try {
-    const user = await UserModel.findById(req.userId);
+    const user = await UserModel.findByIdAndUpdate(
+      req.userId,
+      { $set: { currentCart: [] } },
+      { new: true }
+    );
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    user.currentCart = [];
-
-    await user.save();
-
     res.status(200).json(user.currentCart);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
+    console.log("clearCurrentCart Error:\n", errorName, errorMessage);
     res.status(500).json({ message: errorMessage });
   }
 }

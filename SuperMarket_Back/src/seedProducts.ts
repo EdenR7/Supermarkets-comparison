@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { writeOrderReq } from "./utils/scrape/funcs";
+import { writeOrderReq } from "./scrape/scrape_utils/funcs";
 import ProductModel from "./models/product.model";
 import { PRODUCTS } from "./constants/scrape.constants";
 
@@ -26,5 +26,5 @@ const seedProducts = async () => {
   }
 };
 
-// writeOrderReq();
-seedProducts();
+writeOrderReq();
+// seedProducts();

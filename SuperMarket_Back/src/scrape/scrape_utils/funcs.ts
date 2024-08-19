@@ -4,14 +4,25 @@ import {
   ScrapedProductCategoriesOptions,
   SuperMarketImgsI,
   SuperMarketPricesI,
-} from "../../types/scrape/scraping.types";
-import { ramiLevyScrape } from "../../scrape/rami_levi/rami_levyScraping";
-import { shufersalScrape } from "../../scrape/shufersal/shufersalScraping";
-import { yohananofScrape } from "../../scrape/yohannanof/yohananofScraping";
-import { ProductToSeedI } from "../../types/scrape/products.types";
+} from "../scrape_types/scraping.types";
+import { ramiLevyScrape } from "../rami_levi/rami_levyScraping";
+import { shufersalScrape } from "../shufersal/shufersalScraping";
+import { yohananofScrape } from "../yohannanof/yohananofScraping";
+import { ProductsCategoriesOptions } from "../../types/products.types";
 
 export function reverseString(str: string) {
   return str.split("").reverse().join("");
+}
+
+interface ScrapedProductPriceElementI {
+  brandName: string;
+  price: number | null | string;
+}
+interface ScrapedProductI {
+  name: string;
+  category: ProductsCategoriesOptions;
+  img: string;
+  prices: ScrapedProductPriceElementI[];
 }
 
 export function defineCategory(category: ScrapedProductCategoriesOptions) {
@@ -88,26 +99,26 @@ export function adjustDataByIndex(
   data3: SuperMarketPricesI,
   imgs: SuperMarketImgsI
 ) {
-  const adjustedData: ProductToSeedI[] = [];
+  const adjustedData: ScrapedProductI[] = [];
   for (const key in data1) {
     const categoryKey = key as ScrapedProductCategoriesOptions;
     for (let i = 0; i < data1[categoryKey].length; i++) {
-      const adjustedProduct: ProductToSeedI = {
+      const adjustedProduct: ScrapedProductI = {
         name: data1[categoryKey][i].name,
         img: imgs[categoryKey][i],
         category: defineCategory(categoryKey),
         prices: [
           {
             brandName: "Shufersal",
-            price: data1[categoryKey][i]?.price || "N/A",
+            price: data1[categoryKey][i]?.price || -1,
           },
           {
             brandName: "Yohananof",
-            price: data2[categoryKey][i]?.price || "N/A",
+            price: data2[categoryKey][i]?.price || -1,
           },
           {
             brandName: "Rami Levy",
-            price: data3[categoryKey][i]?.price || "N/A",
+            price: data3[categoryKey][i]?.price || -1,
           },
         ],
       };
@@ -118,10 +129,10 @@ export function adjustDataByIndex(
 }
 export async function writeOrderReq() {
   try {
+    const yohananofData = await yohananofScrape();
     const { shufersalPrices: shufersalData, shufersalImgs } =
       await shufersalScrape();
     const ramiLevyData = await ramiLevyScrape();
-    const yohananofData = await yohananofScrape();
     console.log(
       "Please translate all the hebrew to english and convert all the sub prices to numbers (omit symbols or chars if needed, if null then insert -1). Also I want you to add one line description key for each "
     );

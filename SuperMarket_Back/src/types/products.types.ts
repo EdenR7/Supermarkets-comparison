@@ -11,6 +11,7 @@ export interface CompanyProductI {
   brandName: BrandsOptions;
   price: number;
 }
+
 export interface ProductI {
   name: string;
   category: ProductsCategoriesOptions;

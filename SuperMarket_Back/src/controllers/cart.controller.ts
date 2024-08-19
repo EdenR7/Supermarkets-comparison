@@ -4,14 +4,15 @@ import UserModel from "../models/user.model";
 import { AuthRequest } from "../types/auth.types";
 import { getErrorData } from "../utils/errors/ErrorsFunctions";
 
-export const createCart = async (req: AuthRequest, res: Response) => {
+export async function createCart(req: AuthRequest, res: Response) {
   const { name, cartProducts, collaborators } = req.body;
-
+  if (!name || !cartProducts || !collaborators) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
   try {
     const cart = await CartModel.findOne({ name, userId: req.userId });
-    if (cart) {
+    if (cart)
       return res.status(400).json({ message: "Cart Name already exists" });
-    }
 
     const newCart = new CartModel({
       name,
@@ -31,7 +32,7 @@ export const createCart = async (req: AuthRequest, res: Response) => {
     }
     res.status(500).json({ message: "Internal Error" });
   }
-};
+}
 
 export const addCollaborator = async (req: AuthRequest, res: Response) => {
   const { cartId } = req.params;
@@ -70,7 +71,11 @@ export const getUserCarts = async (req: AuthRequest, res: Response) => {
     res.json(carts);
   } catch (err) {
     const { errorMessage, errorName } = getErrorData(err);
-    res.status(500).json({ message: errorMessage });
+    console.error("getUserCarts: error", errorName, errorMessage);
+    if (errorName === "ValidationError") {
+      return res.status(400).json({ message: errorMessage });
+    }
+    res.status(500).json({ message: "Internal Error" });
   }
 };
 
@@ -86,7 +91,11 @@ export const getCartById = async (req: AuthRequest, res: Response) => {
     res.json(cart);
   } catch (err) {
     const { errorMessage, errorName } = getErrorData(err);
-    res.status(500).json({ message: errorMessage });
+    console.error("getCartById: error", errorName, errorMessage);
+    if (errorName === "ValidationError") {
+      return res.status(400).json({ message: errorMessage });
+    }
+    res.status(500).json({ message: "Internal Error" });
   }
 };
 

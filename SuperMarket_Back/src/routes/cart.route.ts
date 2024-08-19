@@ -5,9 +5,9 @@ import {
   getCartById,
   updateCart,
   deleteCart,
-  addCollaborator, // Import the addCollaborator controller
+  addCollaborator,
 } from "../controllers/cart.controller";
-import { authorizeCartOwner } from "../middlewares/auth.middleware"; // Import the authorizeCartOwner middleware
+import { authorizeCartOwner } from "../middlewares/auth.middleware";
 
 const router = Router();
 

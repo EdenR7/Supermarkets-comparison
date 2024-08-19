@@ -5,9 +5,9 @@ import {
   SuperMarketCategoriesI,
   SuperMarketImgsI,
   SuperMarketPricesI,
-} from "../../types/scrape/scraping.types";
+} from "../scrape_types/scraping.types";
 import { getErrorData } from "../../utils/errors/ErrorsFunctions";
-import { addScrapedProductToCurrentCategory } from "../../utils/scrape/funcs";
+import { addScrapedProductToCurrentCategory } from "../scrape_utils/funcs";
 
 export async function shufersalScrape() {
   const shufersalPrices: SuperMarketPricesI = {
