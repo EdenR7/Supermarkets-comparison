@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import CartModel from "../models/cart.model";
 import UserModel from "../models/user.model";
-import { AuthRequest } from "../types/auth.types";
+import { AuthRequest, CartAuthRequest } from "../types/auth.types";
 import { getErrorData } from "../utils/errors/ErrorsFunctions";
 
 export async function createCart(req: AuthRequest, res: Response) {
-  const { name, cartProducts, collaborators } = req.body;
-  if (!name || !cartProducts || !collaborators) {
+  const { name, cartProducts } = req.body;
+  if (!name || !cartProducts) {
     return res.status(400).json({ message: "Missing required fields" });
   }
   try {
@@ -17,7 +17,6 @@ export async function createCart(req: AuthRequest, res: Response) {
     const newCart = new CartModel({
       name,
       userId: req.userId,
-      collaborators,
       cartProducts,
     });
 
@@ -34,38 +33,7 @@ export async function createCart(req: AuthRequest, res: Response) {
   }
 }
 
-export const addCollaborator = async (req: AuthRequest, res: Response) => {
-  const { cartId } = req.params;
-  const { collaboratorUsername } = req.body;
-
-  try {
-    const user = await UserModel.findOne({ username: collaboratorUsername });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const cart = await CartModel.findById(cartId);
-    if (!cart) {
-      return res.status(404).json({ message: "Cart not found" });
-    }
-
-    if (cart.collaborators?.includes(user._id)) {
-      return res
-        .status(400)
-        .json({ message: "User is already a collaborator" });
-    }
-
-    cart.collaborators?.push(user._id);
-    await cart.save();
-
-    res.json(cart);
-  } catch (err) {
-    const { errorMessage, errorName } = getErrorData(err);
-    res.status(500).json({ message: errorMessage });
-  }
-};
-
-export const getUserCarts = async (req: AuthRequest, res: Response) => {
+export async function getUserCarts(req: AuthRequest, res: Response) {
   try {
     const carts = await CartModel.find({ userId: req.userId });
     res.json(carts);
@@ -77,9 +45,9 @@ export const getUserCarts = async (req: AuthRequest, res: Response) => {
     }
     res.status(500).json({ message: "Internal Error" });
   }
-};
+}
 
-export const getCartById = async (req: AuthRequest, res: Response) => {
+export async function getCartById(req: AuthRequest, res: Response) {
   const { cartId } = req.params;
 
   try {
@@ -97,32 +65,84 @@ export const getCartById = async (req: AuthRequest, res: Response) => {
     }
     res.status(500).json({ message: "Internal Error" });
   }
-};
+}
 
-export const updateCart = async (req: AuthRequest, res: Response) => {
+export async function addCollaborator(req: CartAuthRequest, res: Response) {
   const { cartId } = req.params;
-  const { name, cartProducts, collaborators } = req.body;
+  const { collaboratorUsername } = req.body;
+  if (!collaboratorUsername) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
 
   try {
-    const cart = await CartModel.findById(cartId);
-    if (!cart) {
-      return res.status(404).json({ message: "Cart not found" });
+    const user = await UserModel.findOne({ username: collaboratorUsername });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
+    // The existence of the cart and the user is already checked in the middlewares !
+    const cart = await CartModel.findOneAndUpdate(
+      {
+        _id: cartId,
+        collaborators: { $ne: user._id },
+      },
+      {
+        $push: { collaborators: user._id },
+      },
+      { new: true }
+    );
 
-    cart.name = name || cart.name;
-    cart.cartProducts = cartProducts || cart.cartProducts;
-    cart.collaborators = collaborators || cart.collaborators;
-
-    await cart.save();
+    if (!cart) {
+      return res
+        .status(400)
+        .json({ message: `${collaboratorUsername} is already a collaborator` });
+    }
 
     res.json(cart);
   } catch (err) {
     const { errorMessage, errorName } = getErrorData(err);
-    res.status(500).json({ message: errorMessage });
+    console.error("addCollaborator: error", errorName, errorMessage);
+    if (errorName === "ValidationError") {
+      return res.status(400).json({ message: errorMessage });
+    }
+    res.status(500).json({ message: "Internal Error" });
   }
-};
+}
 
-export const deleteCart = async (req: AuthRequest, res: Response) => {
+export async function updateCart(req: CartAuthRequest, res: Response) {
+  const { cartId } = req.params;
+  const { name, cartProducts, collaborators } = req.body;
+
+  try {
+    const updatedCart = await CartModel.findOneAndUpdate(
+      { _id: cartId },
+      {
+        $set: {
+          ...(name && { name }),
+          ...(Array.isArray(cartProducts) &&
+            cartProducts.length && { cartProducts }),
+          ...(Array.isArray(collaborators) &&
+            collaborators.length && { collaborators }),
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res.json(updatedCart);
+  } catch (err) {
+    const { errorMessage, errorName } = getErrorData(err);
+    console.error("updateCart: error", errorName, errorMessage);
+    if (errorName === "ValidationError") {
+      return res.status(400).json({ message: errorMessage });
+    }
+    res.status(500).json({ message: "Internal Error" });
+  }
+}
+
+export async function deleteCart(req: CartAuthRequest, res: Response) {
   const { cartId } = req.params;
 
   try {
@@ -134,6 +154,10 @@ export const deleteCart = async (req: AuthRequest, res: Response) => {
     res.json({ message: "Cart deleted successfully" });
   } catch (err) {
     const { errorMessage, errorName } = getErrorData(err);
-    res.status(500).json({ message: errorMessage });
+    console.error("deleteCart: error", errorName, errorMessage);
+    if (errorName === "ValidationError") {
+      return res.status(400).json({ message: errorMessage });
+    }
+    res.status(500).json({ message: "Internal Error" });
   }
-};
+}

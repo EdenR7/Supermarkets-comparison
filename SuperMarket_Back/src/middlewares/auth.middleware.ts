@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import Cart from "../models/cart.model";
 import { getErrorData } from "../utils/errors/ErrorsFunctions";
-import { AuthRequest } from "../types/auth.types";
+import { AuthRequest, CartAuthRequest } from "../types/auth.types";
+import { CartI } from "../types/cart.types";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -13,16 +14,6 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
     console.log(`auth.middleware: no token provided`);
     return res.status(401).json("Access denied");
   }
-
-  // const authHeader = req.headers["authorization"] as
-  //   | string
-  //   | string[]
-  //   | undefined;
-
-  // const token =
-  //   authHeader && typeof authHeader === "string"
-  //     ? authHeader.split(" ")[1]
-  //     : null;
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
@@ -37,16 +28,15 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// Middleware to authorize cart owner
-export const authorizeCartOwner = async (
-  req: Request,
+export async function authorizeCartOwner(
+  req: AuthRequest,
   res: Response,
   next: NextFunction
-) => {
-  const { cartId } = req.params; // Extract cartId from the route parameters
+) {
+  const { cartId } = req.params;
 
   try {
-    const cart = await Cart.findById(cartId); // Use cartId here
+    const cart = await Cart.findById(cartId);
     if (!cart) {
       console.log(cartId);
 
@@ -55,22 +45,26 @@ export const authorizeCartOwner = async (
         .json({ message: `Cart with id ${cartId} not found` });
     }
 
-    if (cart.userId.toString() !== (req as AuthRequest).userId) {
+    if (cart.userId.toString() !== req.userId) {
       return res
         .status(403)
         .json({ message: "You do not have permission to access this cart" });
     }
-
+    (req as CartAuthRequest).validcart = cart;
     next();
   } catch (err) {
     const { errorMessage, errorName } = getErrorData(err);
-    res.status(500).json({ message: errorMessage });
+    console.error(
+      "authorizeCartOwner Middleware: error",
+      errorName,
+      errorMessage
+    );
+    if (errorName === "ValidationError") {
+      return res.status(400).json({ message: errorMessage });
+    }
+    if (errorName === "CastError") {
+      return res.status(400).json({ message: "Invalid cart id" });
+    }
+    res.status(500).json({ message: "Internal Error" });
   }
-};
-
-// // Extend the Request interface to include userId
-// declare module "express-serve-static-core" {
-//   interface Request {
-//     userId?: string;
-//   }
-// }
+}

@@ -8,7 +8,9 @@ import {
 const productsRouter = Router();
 
 productsRouter.get("/", getProducts);
-productsRouter.post("/", getProductByName);
 productsRouter.get("/:id", getProductById);
+
+//To delete!!!
+productsRouter.post("/", getProductByName); // dont need
 
 export default productsRouter;

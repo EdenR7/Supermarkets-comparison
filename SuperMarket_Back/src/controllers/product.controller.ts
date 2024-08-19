@@ -3,18 +3,24 @@ import { getErrorData } from "../utils/errors/ErrorsFunctions";
 import ProductModel from "../models/product.model";
 
 export async function getProducts(req: Request, res: Response) {
-  const { category } = req.query;
-  const queryCategory = category || "Milk and Eggs";
+  const { category, productName } = req.query;
 
   try {
-    const products = await ProductModel.find({
-      category: queryCategory,
-    });
+    let products;
+    if (productName) {
+      products = await ProductModel.find({
+        name: { $regex: productName as string, $options: "i" },
+      }).limit(8);
+    } else {
+      products = await ProductModel.find({
+        category: category || "Milk and Eggs",
+      });
+    }
     res.status(200).json(products);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
-    res.status(500).json("Server error getting all reviews");
+    console.error("getProducts: error", errorName, errorMessage);
+    res.status(500).json({ message: "Internal Error" });
   }
 }
 
@@ -30,8 +36,8 @@ export async function getProductById(req: Request, res: Response) {
     res.status(200).json(product);
   } catch (error) {
     const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
-    res.status(500).json("Server error getting all reviews");
+    console.error("getProductById: error", errorName, errorMessage);
+    res.status(500).json({ message: "Internal Error" });
   }
 }
 
@@ -54,8 +60,6 @@ export async function getProductByName(req: Request, res: Response) {
     }
     res.status(200).json(products);
   } catch (error) {
-    const { errorMessage, errorName } = getErrorData(error);
-    console.log(errorName, errorMessage);
-    res.status(500).json("Server error getting all reviews");
+    getProductById;
   }
 }

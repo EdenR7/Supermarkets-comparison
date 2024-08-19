@@ -30,11 +30,11 @@ async function main() {
   app.use(cors());
 
   // ROUTES
-  app.use("/api/auth", authRoutes); // checked
-  app.use("/api/products", productRoutes);
-  app.use("/api/user", verifyToken, userRoutes);
-  app.use("/api/cart", verifyToken, cartRoutes);
-  app.use("/api/rooms", verifyToken, roomsRoutes);
+  app.use("/api/auth", authRoutes); 
+  app.use("/api/products", productRoutes); 
+  app.use("/api/user", verifyToken, userRoutes); 
+  app.use("/api/cart", verifyToken, cartRoutes); 
+  app.use("/api/rooms", verifyToken, roomsRoutes); // to check
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -45,3 +45,5 @@ main();
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+// check the seed !
