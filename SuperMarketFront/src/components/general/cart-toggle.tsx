@@ -8,7 +8,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
 } from "../ui/dropdown-menu";
 import { useAuth } from "@/providers/auth-provider";
 import { Link } from "react-router-dom";
@@ -21,6 +20,8 @@ function CartToggle() {
   const { toast } = useToast();
   const { loggedInUser, setLoggedInUser } = useAuth();
   const cart = loggedInUser?.currentCart;
+  console.log("cart", cart);
+
   async function handleClearCart() {
     const prevCart = cart;
     try {
@@ -67,22 +68,25 @@ function CartToggle() {
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-w-full" align="end">
+            <DropdownMenuContent className="max-w-full p-4" align="end">
               <div className=" flex justify-between items-center">
-                <DropdownMenuLabel>My Cart</DropdownMenuLabel>
-                <Button
-                  onClick={handleClearCart}
-                  className=" text-accent"
-                  variant={"link"}
-                >
-                  Clear cart
-                </Button>
+                <DropdownMenuLabel className=" p-0">My Cart</DropdownMenuLabel>
+                {cart.length === 0 ? (
+                  <p className=" ml-4 text-accent text-sm">Empty...</p>
+                ) : (
+                  <Button
+                    onClick={handleClearCart}
+                    className=" text-accent"
+                    variant={"link"}
+                  >
+                    Clear cart
+                  </Button>
+                )}
               </div>
 
               {cart.map((cartItem) => (
                 <CartItem key={cartItem.productId} cartItem={cartItem} />
               ))}
-              <DropdownMenuSeparator />
               {loggedInUser.currentCart.length > 0 && (
                 <DropdownMenuItem asChild>
                   <Link to="/compare" className="w-full">

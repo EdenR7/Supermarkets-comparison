@@ -32,30 +32,30 @@ export async function checkUserRoom(userId: string) {
 }
 
 io.on("connection", (socket: CustomSocket) => {
-  socket.on("login", async (userId: string) => {
-    socket.userId = userId;
-    console.log(`User ${userId} logged in `);
-    const userRoom = await checkUserRoom(userId);
-    if (userRoom) {
-      socket.join(userRoom.roomId);
-      io.to(userRoom.roomId).emit("New user joined", userRoom);
-      console.log(`new User joined room ${userRoom.roomId}`);
-    } else {
-      console.log("User has no room");
-    }
-  });
+  // socket.on("login", async (userId: string) => {
+  //   socket.userId = userId;
+  //   console.log(`User ${userId} logged in `);
+  //   const userRoom = await checkUserRoom(userId);
+  //   if (userRoom) {
+  //     socket.join(userRoom.roomId);
+  //     io.to(userRoom.roomId).emit("New user joined", userRoom);
+  //     console.log(`new User joined room ${userRoom.roomId}`);
+  //   } else {
+  //     console.log("User has no room");
+  //   }
+  // });
 
-  socket.on("create_room", async (userId: string) => {
-    console.log(`Room created`);
-    const userRoom = await checkUserRoom(userId);
-    if (userRoom) {
-      socket.join(userRoom.roomId);
-      io.to(userRoom.roomId).emit("New user joined", userRoom);
-      console.log(`User ${userId} joined room ${userRoom.roomId}`);
-    } else {
-      console.log("User has no room");
-    }
-  });
+  // socket.on("create_room", async (userId: string) => {
+  //   console.log(`Room created`);
+  //   const userRoom = await checkUserRoom(userId);
+  //   if (userRoom) {
+  //     socket.join(userRoom.roomId);
+  //     io.to(userRoom.roomId).emit("New user joined", userRoom);
+  //     console.log(`User ${userId} joined room ${userRoom.roomId}`);
+  //   } else {
+  //     console.log("User has no room");
+  //   }
+  // });
 
   socket.on("disconnect", () => {
     // console.log(`index: disconnected`, socket.id);

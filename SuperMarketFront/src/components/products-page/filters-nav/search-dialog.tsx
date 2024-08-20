@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useProductSearch } from "@/hooks/useProductSearch";
-import { IconInput } from "../ui/input";
 import { Search } from "lucide-react";
 
 import { IProduct } from "@/types/product.types";
 
+import { IconInput } from "@/components/ui/input";
 import SearchItem from "./search-item";
 
 function SearchDialog() {
@@ -21,7 +21,7 @@ function SearchDialog() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-4">
       <IconInput
         Icon={Search}
         value={searchTerm}

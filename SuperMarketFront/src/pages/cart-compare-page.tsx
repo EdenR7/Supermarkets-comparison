@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import SupermarketCard from "../components/general/supermarket-card";
 import { useAuth } from "@/providers/auth-provider";
-import SaveCartDialog from "../components/general/compare-alert-dialog";
 import yohananofImage from "../images/yohananof.png";
 import shufersalImage from "../images/shufersal.png";
 import ramiLevyImage from "../images/ramiLevy.png";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import useGeoLocation from "@/hooks/useGeoLocation";
+import ComparePageActionsButton from "@/components/general/compare-page-actions-button";
 
 interface CartItem {
   productName: string;
@@ -24,6 +24,8 @@ interface Supermarket {
   onlineLink: string;
   supermarketImage: string;
 }
+
+export function ComparedCartList() {}
 
 const CartPage: React.FC = () => {
   // const { loaded, position, error } = useGeoLocation();
@@ -133,7 +135,7 @@ const CartPage: React.FC = () => {
           ))}
         </ul>
         <div className="flex justify-center gap-4">
-          <SaveCartDialog
+          <ComparePageActionsButton
             cartItems={loggedInUser?.currentCart!}
             triggerComparison={triggerComparison}
           />
@@ -154,7 +156,7 @@ const CartPage: React.FC = () => {
 
         {supermarketLocations.length > 0 && userLocation && (
           <>
-            {loaded && <div>Loading...</div>}
+            {/* {loaded && <div>Loading...</div>} */}
             <div className="mt-12">
               <GoogleMap
                 center={userLocation}

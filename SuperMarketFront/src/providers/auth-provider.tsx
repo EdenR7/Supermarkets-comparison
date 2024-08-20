@@ -4,23 +4,7 @@ import api from "@/lib/api";
 import { RegisterFormValues } from "@/pages/register-page";
 import { LoginFormValues as LoginCredentials } from "@/pages/login-page";
 import { socket } from "@/services/sockets";
-import { useLiveCart } from "./live-cart-provider";
-import { IBrandProduct } from "@/types/product.types";
-
-export interface LoggedInUser {
-  _id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  address: string;
-  currentCart: {
-    productId: string;
-    productName: string;
-    quantity: number;
-    productPrices: IBrandProduct[];
-  }[];
-}
+import { LoggedInUser } from "@/types/user.types";
 
 interface AuthContextType {
   loggedInUser: LoggedInUser | null | undefined;
@@ -51,14 +35,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     async function fetchUser() {
       try {
-        const response = await api.get("/auth/loggedInUser", {
+        const response = await api.get("/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        // console.log(response.data);
 
-        socket.emit("login", response.data._id);
-        console.log("login");
+        // socket.emit("login", response.data._id);
+        // console.log("login");
 
         setLoggedInUser(response.data);
       } catch (error: any) {

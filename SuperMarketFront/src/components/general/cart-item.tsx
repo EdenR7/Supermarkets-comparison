@@ -56,7 +56,7 @@ function CartItem(props: CartItemProps) {
 
   return (
     <>
-      <DropdownMenuItem className="hover:bg-foreground/10">
+      <DropdownMenuItem className="hover:bg-foreground/10 ">
         <div className="flex w-full sm:items-center justify-between flex-col gap-2 sm:flex-row ">
           <div>
             <p className="max-w-36  truncate">{cartItem.productName}</p>

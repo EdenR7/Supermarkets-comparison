@@ -46,17 +46,14 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 function AuthRoutes({ children }: { children: React.ReactNode }) {
   const { loggedInUser } = useAuth();
 
-  // in case the user is still being fetched
   if (loggedInUser === undefined) {
     return null;
   }
 
-  // if the user is logged in, redirect to home
   if (loggedInUser) {
     return <Navigate to="/" replace />;
   }
 
-  // if the user is not logged in, show the auth routes
   return children;
 }
 
@@ -73,8 +70,7 @@ function App() {
           <Route path="team" element={<TeamPage />} />
         </Route>
 
-        {/* <Route path="services" element={<div>Services</div>} /> */}
-        {/* Protected Routes */}
+
         <Route
           path="savedCarts"
           element={

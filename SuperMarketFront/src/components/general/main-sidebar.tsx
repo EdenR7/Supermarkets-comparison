@@ -20,7 +20,7 @@ import {
   User,
 } from "lucide-react";
 import { UserButton } from "./user-button";
-import { AuthButton } from "./auth-button";
+import { AuthButton } from "./main-navbar/auth-button";
 import { useLiveCart } from "@/providers/live-cart-provider";
 
 export function MainSideBar() {

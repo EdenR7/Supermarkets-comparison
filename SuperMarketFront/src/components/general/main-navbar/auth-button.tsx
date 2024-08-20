@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { User } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { formatPriceRange } from "@/lib/formatPriceRange";
-import CartItemButtonGroup from "./cart-item-button-group";
+import CartItemButtonGroup from "../general/cart-item-button-group";
 
 interface ProductItemProps {
   product: IProduct;

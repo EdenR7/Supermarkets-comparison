@@ -1,11 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "../mode-toggle";
 import { AuthButton } from "./auth-button";
-import { UserButton } from "./user-button";
+import { UserButton } from "../user-button";
 import { useAuth } from "@/providers/auth-provider";
-import MainSideBar from "./main-sidebar";
+import MainSideBar from "../main-sidebar";
 import { ReactNode } from "react";
-import CartToggle from "./cart-toggle";
+import CartToggle from "../cart-toggle";
 import { useLiveCart } from "@/providers/live-cart-provider";
 import { ClipboardList } from "lucide-react";
 

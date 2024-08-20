@@ -16,6 +16,7 @@ import { useAuth } from "@/providers/auth-provider";
 
 export function UserButton() {
   const { loggedInUser, logout } = useAuth();
+  // console.log(loggedInUser);
 
   return (
     <DropdownMenu>

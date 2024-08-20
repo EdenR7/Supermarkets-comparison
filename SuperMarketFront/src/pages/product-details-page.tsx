@@ -29,7 +29,7 @@ function ProductDetailsPage() {
   return (
     <Dialog open={true} onOpenChange={handleCloseDialog}>
       <DialogContent
-        className="h-[90vh] max-w-3xl overflow-y-auto"
+        className="h-fit max-w-3xl overflow-y-auto"
         aria-describedby={undefined}
       >
         <DialogTitle className="sr-only">Individual product</DialogTitle>
@@ -39,28 +39,29 @@ function ProductDetailsPage() {
           data && (
             <>
               <DialogHeader>
-                <DialogTitle className="text-2xl font-bold">
+                <DialogTitle className="text-xl xs:text-2xl mt-4 font-bold">
                   {data.name}
                 </DialogTitle>
               </DialogHeader>
-              <Card className="mt-4">
+              <Card className="mt-4 text-sm xs:text-base">
                 <CardHeader className="items-center gap-6">
                   <div className="rounded-md bg-white w-4/5 h-[180px] flex items-center justify-center">
                     <img
-                      className="max-w-full max-h-full object-contain"
+                      className="w-4/5 max-h-full object-contain"
                       src={data.img}
                       alt={data.name}
                     />
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4 mx-14">
-                  <p className="text-lg font-semibold">
-                    Price range: {formatPriceRange(data)}
-                  </p>
-                  <p className="text-md">
-                    Category:{" "}
+                  <div className=" font-semibold ">
+                    <h3 className=" text-lg"> Price range:</h3>{" "}
+                    <p>{formatPriceRange(data)}</p>
+                  </div>
+                  <div className="text-md">
+                    <h3 className=" text-lg font-semibold"> Category:</h3>
                     <span className="font-medium">{data.category}</span>
-                  </p>
+                  </div>
                   <div className=" flex justify-center">
                     <CartItemButtonGroup product={data} />
                   </div>

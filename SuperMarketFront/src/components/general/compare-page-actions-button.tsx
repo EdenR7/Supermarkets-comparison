@@ -28,10 +28,10 @@ interface SaveCartDialogProps {
   triggerComparison: () => void;
 }
 
-const SaveCartDialog: React.FC<SaveCartDialogProps> = ({
+function ComparePageActionsButton({
   cartItems,
   triggerComparison,
-}) => {
+}: SaveCartDialogProps) {
   const [cartName, setCartName] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
@@ -108,6 +108,6 @@ const SaveCartDialog: React.FC<SaveCartDialogProps> = ({
       )}
     </AlertDialog>
   );
-};
+}
 
-export default SaveCartDialog;
+export default ComparePageActionsButton;

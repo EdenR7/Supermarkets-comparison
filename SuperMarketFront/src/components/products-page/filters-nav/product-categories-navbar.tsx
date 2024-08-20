@@ -1,12 +1,12 @@
 import { SetURLSearchParams } from "react-router-dom";
 import ProductCategoryDropdown from "./product-category-dropdown";
-import { IconInput } from "../ui/input";
+import { IconInput } from "../../ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import SearchDialog from "./search-dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import SearchDialog from "./search-dialog";
 
 interface ProductCategoriesNavbarProps {
   searchParams: URLSearchParams;
@@ -18,7 +18,7 @@ function ProductCategoriesNavbar(props: ProductCategoriesNavbarProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <div className="sticky top-[72.5px] py-2 z-40 w-full border-border/40 bg-background  shadow-md dark:border-b dark:border-b-primary">
+    <div className="sticky top-[72.5px] py-2 z-40 w-full border-border/40  shadow-md dark:border-b dark:border-b-primary">
       <div className="flex justify-between h-12 max-w-screen-2xl items-center px-6">
         <div className="flex gap-5  text-sm lg:gap-6">
           <ProductCategoryDropdown

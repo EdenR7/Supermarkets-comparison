@@ -1,4 +1,4 @@
-import ProductList from "@/components/general/products-list";
+import ProductList from "@/components/products-page/products-list";
 import { Outlet } from "react-router-dom";
 
 function ProductPage() {

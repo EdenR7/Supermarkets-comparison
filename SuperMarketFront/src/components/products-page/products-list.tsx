@@ -1,12 +1,12 @@
 import { IProduct } from "@/types/product.types";
-import ProductItem from "./product-item";
 import { Link, useSearchParams } from "react-router-dom";
 import React, { useMemo } from "react";
-import ProductCategoriesNavbar from "./product-categories-navbar";
+import ProductCategoriesNavbar from "./filters-nav/product-categories-navbar";
 
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "@/services/proucts.service";
 import { Skeleton } from "../ui/skeleton";
+import ProductItem from "./product-item";
 
 function ProductList() {
   const [searchParams, setSearchParams] = useSearchParams();

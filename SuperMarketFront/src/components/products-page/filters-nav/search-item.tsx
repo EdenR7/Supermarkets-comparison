@@ -1,7 +1,7 @@
 import { IProduct } from "@/types/product.types";
 import { Link } from "react-router-dom";
-import { Separator } from "../ui/separator";
-import CartItemButtonGroup from "./cart-item-button-group";
+import { Separator } from "@/components/ui/separator";
+import CartItemButtonGroup from "@/components/general/cart-item-button-group";
 
 interface SearchItemProps {
   product: IProduct;

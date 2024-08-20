@@ -43,6 +43,8 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
+  console.log(username, password);
+  
 
   try {
     const user = await UserModel.findOne({ username });

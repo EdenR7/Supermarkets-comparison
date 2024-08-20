@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cartService } from "@/services/carts.service";
 import { useAuth } from "@/providers/auth-provider";
-import CopyCartDialog from "@/components/general/copy-cart-alert-dialog";
 import { userService } from "@/services/user-service";
 import { generateTodoCart } from "@/utils/sockets";
 import { socket } from "@/services/sockets";
@@ -17,6 +16,7 @@ import { useLiveCart } from "@/providers/live-cart-provider";
 import { roomService } from "@/services/rooms";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import CopyCartDialog from "@/components/general/copy-cart-alert-dialog";
 
 interface CartItem {
   productId: string;

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import { MainNav } from "@/components/general/main-nav";
+import { MainNav } from "@/components/general/main-navbar/main-nav";
 
 export default function PlatformLayout() {
   return (
