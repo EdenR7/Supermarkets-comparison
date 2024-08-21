@@ -5,7 +5,7 @@ import yohananofImage from "../images/yohananof.png";
 import shufersalImage from "../images/shufersal.png";
 import ramiLevyImage from "../images/ramiLevy.png";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import useGeoLocation from "@/hooks/useGeoLocation";
+// import useGeoLocation from "@/hooks/useGeoLocation";
 import ComparePageActionsButton from "@/components/general/compare-page-actions-button";
 
 interface CartItem {

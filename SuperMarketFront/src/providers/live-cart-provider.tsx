@@ -57,7 +57,8 @@ export function LiveCartProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function changeProductQuantity(newValue: number, productId: string) {
+  async function changeProductQuantity(newValue: number) {
+  // async function changeProductQuantity(newValue: number, productId: string) {
     try {
       console.log("Product quantity changed:", newValue);
     } catch (error) {

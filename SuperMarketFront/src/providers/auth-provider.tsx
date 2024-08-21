@@ -3,7 +3,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import api from "@/lib/api";
 import { RegisterFormValues } from "@/pages/register-page";
 import { LoginFormValues as LoginCredentials } from "@/pages/login-page";
-import { socket } from "@/services/sockets";
+// import { socket } from "@/services/sockets";
 import { LoggedInUser } from "@/types/user.types";
 
 interface AuthContextType {
