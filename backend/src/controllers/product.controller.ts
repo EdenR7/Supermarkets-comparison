@@ -4,6 +4,7 @@ import ProductModel from "../models/product.model";
 
 export async function getProducts(req: Request, res: Response) {
   const { category, productName } = req.query;
+  console.log("category", category);
 
   try {
     let products;
