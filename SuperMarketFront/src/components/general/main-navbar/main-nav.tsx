@@ -53,7 +53,7 @@ export function MainNav() {
           </Link>
           <nav className="hidden sm:flex items-center gap-4 text-xs sm:text-sm">
             <TopNavLink href="/products">Products</TopNavLink>
-            <TopNavLink href="/about">About</TopNavLink>
+            <TopNavLink href="/about">Abou</TopNavLink>
 
             {loggedInUser && (
               <TopNavLink href="/savedCarts">My Carts</TopNavLink>

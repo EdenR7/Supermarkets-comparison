@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   async function login(cred: LoginCredentials) {
     console.log("login");
-
+    
     try {
       const response = await api.post("/auth/login", cred);
       console.log(response.data);
