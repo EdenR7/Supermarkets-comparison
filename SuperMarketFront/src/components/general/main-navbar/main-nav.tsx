@@ -33,8 +33,8 @@ export function MainNav() {
   }
 
   return (
-    <header className="sticky top-0 py-2 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md dark:border-b dark:border-b-primary">
-      <div className="flex justify-between h-14 max-w-screen-2xl items-center px-6">
+    <header className=" sticky top-0 py-2 z-50 w-full border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-md dark:border-b dark:border-b-primary">
+      <div className=" mx-auto flex justify-between h-14 max-w-screen-2xl items-center px-6">
         <div className="flex items-center overflow-hidden">
           <Link
             to="/"
@@ -53,7 +53,7 @@ export function MainNav() {
           </Link>
           <nav className="hidden sm:flex items-center gap-4 text-xs sm:text-sm">
             <TopNavLink href="/products">Products</TopNavLink>
-            <TopNavLink href="/about">Abou</TopNavLink>
+            <TopNavLink href="/about">About</TopNavLink>
 
             {loggedInUser && (
               <TopNavLink href="/savedCarts">My Carts</TopNavLink>
